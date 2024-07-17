@@ -1,5 +1,12 @@
-# Node.js dependencies
-node_modules
+# dependencies
+/node_modules
+
+
+
+
+# production
+/build
+
 
 # env
-.env
+# .env
