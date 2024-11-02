@@ -1,6 +1,6 @@
 const bcrypt = require("bcrypt");
 
-const { find_employee_with_user_id } = require("../DAL/employee");
+const { find_customer_with_user_id } = require("../DAL/customer");
 const { find_user_by_email } = require("../DAL/user");
 const { create_jwt_token, verify_jwt_token } = require("../libs/jsonwebtoken");
 const {
@@ -29,26 +29,29 @@ const _login = async (body, resp) => {
 
   //   create token
 
-  let employee = await find_employee_with_user_id(user._id);
-  if (!employee) {
+  let customer = await find_customer_with_user_id(user._id);
+  if (!customer) {
     resp.error = "Somthing Went Wrong";
     resp.message = "Somthing Went Wrong";
     return resp;
   }
 
   //   user to object and delete password
+  user.otp = "";
+  user.save();
   user = user.toObject();
   delete user.password;
+  delete user.otp;
 
-  //   employee to object
-  employee = employee.toObject();
+  //   customer to object
+  customer = customer.toObject();
 
-  employee = { ...employee, user };
-  const token = create_jwt_token({ data: employee });
+  customer = { ...customer, user };
+  const token = create_jwt_token({ data: customer });
   await add_to_session(token, user._id);
 
   //   return response
-  resp.data = { user: employee, token };
+  resp.data = { customer, token };
   return resp;
 };
 const login = async (body) => {
@@ -66,9 +69,7 @@ const login = async (body) => {
 const _logout = async (token, resp) => {
   const decoded = verify_jwt_token({ data: token });
   if (decoded?.data?.user._id) {
-    let session = await delete_from_session_by_user_id(
-      decoded?.data?.user._id
-    );
+    let session = await delete_from_session_by_user_id(decoded?.data?.user._id);
 
     if (session?.acknowledged) {
       //   return response

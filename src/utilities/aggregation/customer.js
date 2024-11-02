@@ -1,5 +1,5 @@
 
-const employee_aggregation = {
+const customer_aggregation = {
   lookup: {
     $lookup: {
       from: "users",
@@ -25,4 +25,4 @@ const employee_aggregation = {
   },
 };
 
-module.exports = employee_aggregation;
+module.exports = customer_aggregation;

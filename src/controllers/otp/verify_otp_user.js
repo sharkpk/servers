@@ -1,15 +1,17 @@
-const { login } = require("../../services/auth");
+const {
+  verify_user_otp_validation_schema,
+} = require("../../utilities/validation/otp");
+const { verifyUserOTP } = require("../../services/otp");
 const catch_validation_errors = require("../../utilities/catch_validation_errors");
-const { login_validation_schema } = require("../../utilities/validation/auth");
 
-const login_user = async (req, res) => {
+const verify_otp_user = async (req, res) => {
   try {
     try {
-      await login_validation_schema.validate(req.body, {
+      await verify_user_otp_validation_schema.validate(req.body, {
         abortEarly: false,
       });
+      const { message, data, error } = await verifyUserOTP(req.body);
 
-      const { error, message, data } = await login(req.body);
       if (error) {
         return res.status(400).json({
           status: 400,
@@ -19,8 +21,8 @@ const login_user = async (req, res) => {
       }
 
       res.status(200).json({
-        code: 201,
-        message: "Successfully Logged In",
+        code: 200,
+        message: message,
         data,
       });
     } catch (err) {
@@ -31,4 +33,4 @@ const login_user = async (req, res) => {
   }
 };
 
-module.exports = login_user;
+module.exports = verify_otp_user;

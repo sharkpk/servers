@@ -1,7 +1,7 @@
-const {  deleteEmployee } = require("../../services/employee");
-const delete_employee = async (req, res) => {
+const {  deleteCustomer } = require("../../services/customer");
+const delete_customer = async (req, res) => {
   try {
-    const { error, message, data } = await deleteEmployee(req.params);
+    const { error, message, data } = await deleteCustomer(req.params);
     if (error) {
       return res.status(400).json({
         status: 400,
@@ -11,7 +11,7 @@ const delete_employee = async (req, res) => {
 
     res.status(204).json({
       code: 204,
-      message: "Employee Deleted",
+      message: "Customer Deleted",
       data,
     });
   } catch (error) {
@@ -19,4 +19,4 @@ const delete_employee = async (req, res) => {
   }
 };
 
-module.exports = delete_employee;
+module.exports = delete_customer;

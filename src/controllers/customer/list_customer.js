@@ -1,7 +1,7 @@
-const { detailEmployee } = require("../../services/employee");
-const detail_employee = async (req, res) => {
+const {  listCustomer } = require("../../services/customer");
+const list_customer = async (req, res) => {
   try {
-    const { error, message, data } = await detailEmployee(req.params);
+    const { error, message, data } = await listCustomer(req.query);
     if (error) {
       return res.status(400).json({
         status: 400,
@@ -11,12 +11,12 @@ const detail_employee = async (req, res) => {
 
     res.status(200).json({
       code: 200,
-      message: "Employee Detail",
-      data,
+      message: "Customer List",
+      ...data,
     });
   } catch (error) {
     res.status(400).send({ status: 400, message: error.message });
   }
 };
 
-module.exports = detail_employee;
+module.exports = list_customer;

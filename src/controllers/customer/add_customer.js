@@ -1,15 +1,17 @@
-const { login } = require("../../services/auth");
+const { addCustomer } = require("../../services/customer");
 const catch_validation_errors = require("../../utilities/catch_validation_errors");
-const { login_validation_schema } = require("../../utilities/validation/auth");
+const {
+  add_customer_validation_schema,
+} = require("../../utilities/validation/customer");
 
-const login_user = async (req, res) => {
+const add_customer = async (req, res) => {
   try {
     try {
-      await login_validation_schema.validate(req.body, {
+      await add_customer_validation_schema.validate(req.body, {
         abortEarly: false,
       });
 
-      const { error, message, data } = await login(req.body);
+      const { error, message, data } = await addCustomer(req.body);
       if (error) {
         return res.status(400).json({
           status: 400,
@@ -18,9 +20,9 @@ const login_user = async (req, res) => {
         });
       }
 
-      res.status(200).json({
+      res.status(201).json({
         code: 201,
-        message: "Successfully Logged In",
+        message: "Customer Added Successfully",
         data,
       });
     } catch (err) {
@@ -31,4 +33,4 @@ const login_user = async (req, res) => {
   }
 };
 
-module.exports = login_user;
+module.exports = add_customer;

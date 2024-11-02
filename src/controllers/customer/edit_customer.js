@@ -1,17 +1,17 @@
-const { addEmployee } = require("../../services/employee");
+const { editCustomer } = require("../../services/customer");
 const catch_validation_errors = require("../../utilities/catch_validation_errors");
 const {
-    add_employee_validation_schema,
-} = require("../../utilities/validation/employee");
+  edit_customer_validation_schema,
+} = require("../../utilities/validation/customer");
 
-const add_employee = async (req, res) => {
+const edit_customer = async (req, res) => {
   try {
     try {
-      await add_employee_validation_schema.validate(req.body, {
+      await edit_customer_validation_schema.validate(req.body, {
         abortEarly: false,
       });
 
-      const { error, message, data } = await addEmployee(req.body);
+      const { error, message, data } = await editCustomer(req.body,req.params);
       if (error) {
         return res.status(400).json({
           status: 400,
@@ -22,7 +22,7 @@ const add_employee = async (req, res) => {
 
       res.status(201).json({
         code: 201,
-        message: "Employee Added Successfully",
+        message: "Customer Editted Successfully",
         data,
       });
     } catch (err) {
@@ -33,4 +33,4 @@ const add_employee = async (req, res) => {
   }
 };
 
-module.exports = add_employee;
+module.exports = edit_customer;
