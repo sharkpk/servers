@@ -14,7 +14,7 @@ const logout_user = async (req, res) => {
       }
 
       res.status(200).json({
-        code: 201,
+        code: 200,
         message: "Successfully Logged Out",
         ...data,
       });

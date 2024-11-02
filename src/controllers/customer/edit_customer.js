@@ -20,8 +20,8 @@ const edit_customer = async (req, res) => {
         });
       }
 
-      res.status(201).json({
-        code: 201,
+      res.status(200).json({
+        code: 200,
         message: "Customer Editted Successfully",
         data,
       });

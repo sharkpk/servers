@@ -9,6 +9,7 @@ const login_user = async (req, res) => {
         abortEarly: false,
       });
 
+      console.log("first");
       const { error, message, data } = await login(req.body);
       if (error) {
         return res.status(400).json({
@@ -19,7 +20,7 @@ const login_user = async (req, res) => {
       }
 
       res.status(200).json({
-        code: 201,
+        code: 200,
         message: "Successfully Logged In",
         data,
       });

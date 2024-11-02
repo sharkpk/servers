@@ -8,12 +8,19 @@ const { send_email } = require("../libs/nodemailer");
 //********************************************{Send User OTP}********************************************************/
 const _findOrCreateUser = async (body, otp) => {
   let user = await find_user_by_email(body.email);
+
   if (!user) {
     user = await add_user_email(body);
   }
 
+  if (body?.signup) {
+    if (user.is_registered) {
+      return null;
+    }
+  }
+
   user.otp = otp;
-  user.save();
+  await user.save();
   return user;
 };
 
@@ -21,8 +28,8 @@ const _sendUserOTP = async (body, resp) => {
   const otp = generate_otp();
   const user = await _findOrCreateUser(body, otp);
   if (!user) {
-    resp.error = "Somthing Went Wrong ";
-    resp.message = "Somthing Went Wrong";
+    resp.error = "Email already exist";
+    resp.message = "Email already exist";
     resp.data = {};
     return resp;
   }
@@ -68,6 +75,8 @@ const _verifyUserOTP = async (body, resp) => {
     resp.data = {};
     return resp;
   }
+  user.otp = "";
+  user.save();
   user = user.toObject();
   delete user.password;
   delete user.otp;
