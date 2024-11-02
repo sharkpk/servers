@@ -9,7 +9,6 @@ const login_user = async (req, res) => {
         abortEarly: false,
       });
 
-      console.log("first");
       const { error, message, data } = await login(req.body);
       if (error) {
         return res.status(400).json({
