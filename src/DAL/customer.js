@@ -57,8 +57,11 @@ const find_all_customer = async ({
     common_aggregation.skip(skip),
     common_aggregation.limit(limit),
   ];
-  const [{ count }] = await Customer.aggregate(aggregation_count);
-  const data = await Customer.aggregate(aggregation);
+  const [{ count = 0 } = {}] = await Customer.aggregate(aggregation_count);
+  let data = [];
+  if (count > 0) {
+    data = await Customer.aggregate(aggregation);
+  }
 
   return {
     count,

@@ -19,8 +19,6 @@ const get_all_users = async ({ limit, skip }) => {
 
 const add_user_password = async (user) => {
   const salt = await bcrypt.genSalt(10);
-  user.otp = "";
-  user.is_registered = true;
   user.password = await bcrypt.hash(user.password, salt);
   user = await user.save();
   return user;
@@ -30,9 +28,17 @@ const add_user_email = async (body) => {
   let user = new User({
     email: body.email,
     password: "",
-    is_registered: false,
-    otp: "",
   });
+  return user;
+};
+const add_user = async (body) => {
+  let user = new User({
+    email: body.email,
+    password: body.password,
+  });
+  const salt = await bcrypt.genSalt(10);
+  user.password = await bcrypt.hash(user.password, salt);
+  user.save();
   return user;
 };
 
@@ -43,4 +49,5 @@ module.exports = {
   get_all_users,
   add_user_password,
   add_user_email,
+  add_user
 };

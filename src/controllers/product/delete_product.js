@@ -1,17 +1,10 @@
-const {
-  verify_user_otp_validation_schema,
-} = require("../../utilities/validation/otp");
-const { verifyUserOTP } = require("../../services/otp");
+const { deleteProduct } = require("../../services/product");
 const catch_validation_errors = require("../../utilities/catch_validation_errors");
 
-const verify_otp_user = async (req, res) => {
+const delete_product = async (req, res) => {
   try {
     try {
-      await verify_user_otp_validation_schema.validate(req.body, {
-        abortEarly: false,
-      });
-      const { message, data, error } = await verifyUserOTP(req.body);
-
+      const { error, message, data } = await deleteProduct(req.params);
       if (error) {
         return res.status(400).json({
           status: 400,
@@ -22,7 +15,7 @@ const verify_otp_user = async (req, res) => {
 
       res.status(200).json({
         code: 200,
-        message: message,
+        message: "Product Deleted",
         data,
       });
     } catch (err) {
@@ -33,4 +26,4 @@ const verify_otp_user = async (req, res) => {
   }
 };
 
-module.exports = verify_otp_user;
+module.exports = delete_product;

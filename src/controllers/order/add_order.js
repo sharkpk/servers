@@ -1,18 +1,18 @@
-const {
-  send_user_otp_validation_schema,
-} = require("../../utilities/validation/otp");
+const { addOrder } = require("../../services/order");
 const catch_validation_errors = require("../../utilities/catch_validation_errors");
+const {
+  add_order_validation_schema,
+} = require("../../utilities/validation/order");
 
-const { sendUserOTP } = require("../../services/otp");
-
-const send_otp_user = async (req, res) => {
+const add_order = async (req, res) => {
   try {
     try {
-      await send_user_otp_validation_schema.validate(req.body, {
+
+      await add_order_validation_schema.validate(req.body, {
         abortEarly: false,
       });
-      const { message, data, error } = await sendUserOTP(req.body);
 
+      const { error, message, data } = await addOrder(req.body);
       if (error) {
         return res.status(400).json({
           status: 400,
@@ -21,9 +21,9 @@ const send_otp_user = async (req, res) => {
         });
       }
 
-      res.status(200).json({
-        code: 200,
-        message: message,
+      res.status(201).json({
+        code: 201,
+        message: "Order Added Successfully",
         data,
       });
     } catch (err) {
@@ -34,4 +34,4 @@ const send_otp_user = async (req, res) => {
   }
 };
 
-module.exports = send_otp_user;
+module.exports = add_order;

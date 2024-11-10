@@ -9,6 +9,7 @@ const {
   find_user_by_email,
   add_user_password,
   find_and_delete_user,
+  add_user,
 } = require("../DAL/user");
 const {
   get_params_data,
@@ -19,23 +20,21 @@ const {
 const _addCustomer = async (body, resp) => {
   let user = await find_user_by_email(body.email);
   if (user) {
-    if (!user) {
-      resp.error = "Somthing Went Wrong";
-      resp.message = "Somthing Went Wrong";
-      return resp;
-    }
-    if (user.is_registered) {
-      resp.error = "Email Alreay axist";
-      resp.message = "Email Alreay axist";
-      return resp;
-    }
-    user.password = body.password;
-    user = await add_user_password(user);
+    resp.error = true;
+    resp.message = "User not Exist";
+    return resp;
+  }
+  user = await add_user(body);
+  if (!user) {
+    resp.error = true;
+    resp.message = "Somthing Went Wrong";
+    return resp;
   }
   let customer = await add_customer({ ...body, user_id: user._id });
 
   if (!customer) {
-    resp.error = "Somthing Went Wrong";
+    await find_and_delete_customer(user._id);
+    resp.error = true;
     resp.message = "Somthing Went Wrong";
     return resp;
   }
@@ -71,7 +70,7 @@ const _editCustomer = async (body, params, resp) => {
 
     return resp;
   }
-  resp.error = "Customer Not Found";
+  resp.error = true;
   resp.message = "Customer Not Found";
   return resp;
 };
@@ -95,7 +94,7 @@ const _detailCustomer = async (params, resp) => {
     resp.data = customer?.[0];
     return resp;
   }
-  resp.error = "Customer Not Found";
+  resp.error = true;
   resp.message = "Customer Not Found";
   return resp;
 };
@@ -115,7 +114,7 @@ const _listCustomer = async (query, resp) => {
   let customer = await find_all_customer(get_query_data(query));
 
   if (!customer) {
-    resp.error = "Customer Not Found";
+    resp.error = true;
     resp.message = "Customer Not Found";
     return resp;
   }
@@ -140,14 +139,14 @@ const _deleteCustomer = async (params, resp) => {
   let customer = await find_and_delete_customer(_id);
 
   if (!customer) {
-    resp.error = "Customer Not Found";
+    resp.error = true;
     resp.message = "Customer Not Found";
     return resp;
   }
 
   let user = await find_and_delete_user(customer.user_id);
   if (!user) {
-    resp.error = "Customer Not Found";
+    resp.error = true;
     resp.message = "Customer Not Found";
     return resp;
   }

@@ -1,6 +1,7 @@
 require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
+const indexFile = require("./src/utilities/html/index.js");
 
 const mainRoute = require("./src/routes");
 const connectMongoDB = require("./src/libs/mongoose");
@@ -26,8 +27,9 @@ connectMongoDB(`${DB_URI}${DB_NAME}`);
 // Use main router
 app.use("/api", mainRoute);
 app.use("*", (req, res) => {
-  res.status(404).send({ ...statusCode[404], message: "Route Not Found" });
+  res.send(indexFile);
 });
+
 
 // listen app on Given Port
 app.listen(PORT, async () => {

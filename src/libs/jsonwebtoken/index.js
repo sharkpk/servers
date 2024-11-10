@@ -16,7 +16,7 @@ const create_jwt_token = ({ data, time = null }) => {
       data,
     },
     SECRET_KEY,
-    { expiresIn: expirationTime }
+    // { expiresIn: expirationTime }
   );
 };
 

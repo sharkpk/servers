@@ -5,14 +5,14 @@ const {get_query_data, get_params_data} = require("../utilities/get_request_data
 const _addUser = async (body, resp) => {
   let user = await find_user_by_email(body.email);
   if (user) {
-    resp.error = "Email Alreay axist";
+    resp.error = true;
     resp.message = "Email Alreay axist";
     return resp;
   }
   // signup new user
   user = await add_user(body);
   if (!user) {
-    resp.error = "Something Went Wrong";
+    resp.error = true;
     resp.message = "Something Went Wrong";
     return resp;
   }

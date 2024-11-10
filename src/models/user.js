@@ -9,14 +9,7 @@ const userSchema = new mongoose.Schema({
     type: String,
     default: "",
   },
-  otp: {
-    type: String,
-    default: "",
-  },
-  is_registered: {
-    type: Boolean,
-    default: false,
-  },
+
 });
 
 userSchema.plugin(timestamps);
@@ -28,8 +21,6 @@ userSchema.methods.toJSON = function () {
     "_id",
     "email",
     "password",
-    "otp",
-    "is_registered",
     "createdAt",
     "updatedAt",
   ]);
