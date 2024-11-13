@@ -1,21 +1,26 @@
-const html=`
+const html = `
 
 <!DOCTYPE html>
 <html>
-<body>
+<body >
 
-<h1>FYP</h1>
+<div style="dislpay:flex;justify-content:center;align-items:center;">
 
-<p>Group Name here</p>
-<ul>
-<li>Student 1</li>
-<li>Student 2</li>
-<li>Student 3</li>
-</ul>
+
+
+
+<h1 style="font-size:50px;">FYP</h1>
+<p style="font-weight:bold">Group Members</p>
+<ol>
+<li>Nida Muneer</li>
+<li>Gul e Zahra</li>
+<li>Asher amir</li>
+</ol>
+</div>
+
 
 </body>
 </html>
-`
+`;
 
-
-module.exports=html
+module.exports = html;

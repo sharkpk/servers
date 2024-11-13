@@ -11,37 +11,17 @@ const find_order_by_customer_id = async (customer_id) => {
   );
 };
 
-const find_all_order = async ({ limit, skip, filter_aggregation, filter }) => {
-  const aggregation_count = [
-    common_aggregation.match(filter_aggregation),
-    common_aggregation.count,
-  ];
-  const aggregation = [
-    common_aggregation.match(filter_aggregation),
-    common_aggregation.skip(skip),
-    common_aggregation.limit(limit),
-    {
-      $lookup: {
-        from: "customers",
-        localField: "customer",
-        foreignField: "_id",
-        as: "customer",
-      },
-    },
-    { $unwind: "$customer" },
-    {
-      $lookup: {
-        from: "products",
-        localField: "products.product",
-        foreignField: "_id",
-        as: "products.product",
-      },
-    },
-  ];
-  const [{ count = 0 } = {}] = await Order.aggregate(aggregation_count);
+const find_all_order = async ({ limit, skip, filter }) => {
+  const count = await Order.find(filter).countDocuments();
   let data = [];
   if (count > 0) {
-    data = await Order.aggregate(aggregation);
+    data = await Order.find(filter)
+      .populate({
+        path: "products.product",
+        model: "product",
+      })
+      .limit(limit)
+      .skip(skip);
   }
 
   return {
