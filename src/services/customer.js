@@ -21,7 +21,7 @@ const _addCustomer = async (body, resp) => {
   let user = await find_user_by_email(body.email);
   if (user) {
     resp.error = true;
-    resp.message = "User not Exist";
+    resp.message = "User Already Exist";
     return resp;
   }
   user = await add_user(body);
