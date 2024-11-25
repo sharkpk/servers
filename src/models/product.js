@@ -16,6 +16,14 @@ const productSchema = new mongoose.Schema({
     type: String,
     default: "",
   },
+  category: {
+    type: String,
+    default: "",
+  },
+  description: {
+    type: String,
+    default: "",
+  },
 });
 
 productSchema.plugin(timestamps);
@@ -28,6 +36,8 @@ productSchema.methods.toJSON = function () {
     "name",
     "image",
     "price",
+    "description",
+    "category",
     "createdAt",
     "updatedAt",
   ]);

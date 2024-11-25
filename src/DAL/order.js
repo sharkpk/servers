@@ -19,7 +19,7 @@ const find_all_order = async ({ limit, skip, filter }) => {
       .populate({
         path: "products.product",
         model: "product",
-      })
+      }).populate({path:'customer',model:'customer'})
       .limit(limit)
       .skip(skip);
   }

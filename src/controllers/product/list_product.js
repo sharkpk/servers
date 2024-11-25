@@ -4,7 +4,7 @@ const catch_validation_errors = require("../../utilities/catch_validation_errors
 const list_product = async (req, res) => {
   try {
     try {
-      const { error, message, data } = await listProduct(req.body);
+      const { error, message, data } = await listProduct(req.query);
       if (error) {
         return res.status(400).json({
           status: 400,
