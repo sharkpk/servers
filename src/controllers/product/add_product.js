@@ -7,12 +7,11 @@ const {
 const add_product = async (req, res) => {
   try {
     try {
-
       await add_product_validation_schema.validate(req.body, {
         abortEarly: false,
       });
 
-      const { error, message, data } = await addProduct(req.body,req.file);
+      const { error, message, data } = await addProduct(req.body, req.file);
       if (error) {
         return res.status(400).json({
           status: 400,

@@ -45,6 +45,8 @@ const add_product = async (body) => {
     name: body.name,
     image: body.image,
     price: body.price,
+    category: body.category,
+    description: body.description,
   });
 
   return await product.save();
